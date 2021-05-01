@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="mb-4">Sign Up</h1>
+  <form class="col-8 mx-auto" action="/signup" method="POST">
+    {{ form.csrf_token }}
+    <div class="mb-4 d-column-flex" style="text-align: left;"> 
+      {{ form.username.label(class="form-label") }}
+      {{ form.username(class="form-control") }}
+    </div>
+    <div class="mb-4 d-column-flex" style="text-align: left;">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-dark float-right">Submit</button>
+  
+  </form>
+
+
+{% endblock %}

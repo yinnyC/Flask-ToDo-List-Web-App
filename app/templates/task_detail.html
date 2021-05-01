@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="mb-4">{{board_title}} Task List</h1>
+<div class="hide" id='new-task-form'>
+  <h5 class="mb-4 ">Create New Task</h5>
+  <form class="col-10 mx-auto" action="/new_task/{{board_id}}" method="POST">
+    {{ form.csrf_token }}
+    <div class="form-row  d-flex">
+      <div class="form-group col-md-4">
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+      </div>
+      <div class="form-group col-md-4 ps-1 pe-1">
+        {{ form.due_date.label(class="form-label") }}
+        {{ form.due_date(class="form-control", placeholder="YYYY-mm-dd") }}
+      </div>
+      <div class="form-group col-md-4">
+        {{ form.status.label(class="form-label") }}
+        {{ form.status(class="form-control") }}
+      </div>
+    </div>
+    <div class="mb-4 d-column-flex" style="text-align: left;"> 
+      {{ form.description.label(class="form-label") }}
+      {{ form.description(class="form-control") }}
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="me-2 btn btn-secondary fw-bold border-white bg-white text-dark hide-create-form" data-name="new-task">Cancel</button>
+      <button type="submit" class="btn btn-secondary fw-bold border-white bg-white text-dark float-right">Submit</button>
+    </div>
+  </form>
+</div>
+
+  
+<div class="card-deck col-12">
+  {% if all_tasks %}
+    {% for task in all_tasks %}
+      <div class="card mb-2 text-dark">
+        <div class="card-header d-flex justify-content-between">
+          <h5 class="card-title text-dark">{{ task.title }}</h5>
+          <button class="btn btn-warning show-form" data-index-number="{{task.id}}">Edit</button>
+        </div>
+        <div class="card-body" style="text-align: left;">
+          <ul>
+            <li>Status: {{task.status}}</li>
+            <li>Due Date: {{task.due_date}}</li>
+            <li>Description: {{task.description}}</li>
+          </ul>
+        </div>
+        <div class="card-footer hide" id="update-task-{{task.id}}">
+          <h5 class="mb-4">Update Task</h5>
+          <form class="col-10 mx-auto" action="/update_task/{{board_id}}/{{task.id}}" method="POST">
+            {{ form.csrf_token }}
+            <div class="form-row  d-flex">
+              <div class="form-group col-md-4">
+                {{ form.title.label(class="form-label") }}
+                {{ form.title(class="form-control",value=task.title,_external=True) }}
+              </div>
+              <div class="form-group col-md-4 ps-1 pe-1">
+                {{ form.due_date.label(class="form-label") }}
+                {{ form.due_date(class="form-control",value=task.due_date,_external=True) }}
+              </div>
+              <div class="form-group col-md-4">
+                {{ form.status.label(class="form-label") }}
+                {{ form.status(class="form-control",value=task.status,_external=True) }}
+              </div>
+            </div>
+            <div class="mb-4 d-column-flex" style="text-align: left;"> 
+              {{ form.description.label(class="form-label") }}
+              <textarea class="form-control" id="description" name="description">{{task.description}}</textarea>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary fw-bold border-white bg-white text-dark hide-form me-1" data-index-number="{{task.id}}">Cancel</button>
+              <button type="submit" class="btn btn-secondary fw-bold border-darks bg-dark text-white">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+<script>
+  document.body.addEventListener('click', function (e) {
+				if (e.target.matches('.show-create-form')) {
+					const formName = e.target.dataset.name;
+					document.getElementById('new-task-form').classList.remove('hide')
+				}
+        else if(e.target.matches('.hide-create-form')) {
+					const formName = e.target.dataset.name;
+					document.getElementById('new-task-form').classList.add('hide')
+				}
+        else if (e.target.matches('.show-form')) {
+          console.log('aye!!!')
+					const indexNumber = e.target.dataset.indexNumber;
+					document.getElementById(`update-task-${indexNumber}`).classList.remove('hide')
+				}
+        else if(e.target.matches('.hide-form')) {
+					const indexNumber = e.target.dataset.indexNumber;
+					document.getElementById(`update-task-${indexNumber}`).classList.add('hide')
+				}
+			});
+  </script>
+{% endblock %}
