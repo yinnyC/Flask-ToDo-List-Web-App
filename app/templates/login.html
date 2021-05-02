@@ -7,10 +7,20 @@
     <div class="mb-4 d-column-flex" style="text-align: left;"> 
       {{ form.username.label(class="form-label") }}
       {{ form.username(class="form-control") }}
+      <ul>
+        {% for error in form.username.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+      </ul>
     </div>
     <div class="mb-4 d-column-flex" style="text-align: left;">
       {{ form.password.label(class="form-label") }}
       {{ form.password(class="form-control") }}
+      <ul>
+        {% for error in form.password.errors %}
+            <li class="error">{{ error }}</li>
+        {% endfor %}
+      </ul>
     </div>
     <button type="submit" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-dark float-right">Submit</button>
   
