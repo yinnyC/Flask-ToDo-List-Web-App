@@ -22,8 +22,9 @@ Then rename the `.env.example` file as `.env`:
 cp .env.example .env
 ```
 
-Then you can run the server:
+Then you can run the server in the docker container with the commands below:
 
 ```Terminal Command
-python3 app.py
+docker build -t flask-image .
+docker run -p 5000:5000 --rm --name 
 ```
